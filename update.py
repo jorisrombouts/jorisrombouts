@@ -7,7 +7,7 @@ Two sources, no API keys, no dependencies beyond the standard library:
 
 If anything fails the script exits non-zero without touching README.md, so a
 broken run leaves the last good block in place rather than publishing a wrong
-number. The box is measured before it is written, for the same reason.
+number.
 
     python3 update.py
 """
@@ -16,7 +16,6 @@ import html
 import json
 import re
 import sys
-import unicodedata
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -39,7 +38,7 @@ README = Path(__file__).resolve().parent / "README.md"
 START, END = "<!-- live:start -->", "<!-- live:end -->"
 
 SPARK = "▁▂▃▄▅▆▇█"
-MINUS = "−"  # U+2212: one cell wide, and sits at digit height
+MINUS = "−"  # U+2212: sits at digit height, unlike a hyphen
 
 WMO = {
     0: "clear", 1: "mostly clear", 2: "partly cloudy", 3: "overcast",
@@ -57,32 +56,6 @@ WMO = {
 
 class UpdateError(RuntimeError):
     """A source could not be read, or returned something unusable."""
-
-
-# --- monospace width -------------------------------------------------------
-
-
-def width(text: str) -> int:
-    """Cells the text occupies. len() is wrong: accents take none, and some
-    characters take two. Every pad in this file goes through here."""
-    cells = 0
-    for char in text:
-        if unicodedata.combining(char):
-            continue
-        cells += 2 if unicodedata.east_asian_width(char) in ("W", "F") else 1
-    return cells
-
-
-def clip(text: str, cells: int) -> str:
-    """Truncate to a cell budget, so a long name cannot shift the columns."""
-    if width(text) <= cells:
-        return text
-    out = ""
-    for char in text:
-        if width(out + char) > cells - 1:
-            break
-        out += char
-    return out.rstrip() + "…"
 
 
 # --- sources ---------------------------------------------------------------
@@ -197,42 +170,34 @@ def standings() -> list[dict]:
 
 # --- rendering -------------------------------------------------------------
 
-# One template for every table row, so the header and the numbers below it
-# cannot drift apart. The 24-cell left column holds either the league name or
-# a right-aligned position plus a team.
-ROW = "  {left:<24}{pld:>3}{gd:>6}{pts:>6}{mark}"
-LABEL = "  {0:<13}{1}"
+
+def ordinal(number: str) -> str:
+    """10 -> 10th. Eleven through thirteen are the exceptions."""
+    n = int(number)
+    suffix = "th" if n % 100 in (11, 12, 13) else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suffix}"
 
 
 def render(sky: dict, table: list[dict]) -> str:
+    """Markdown, not ASCII art: GitHub styles the table and reflows it on a
+    phone. The sparkline is the one part that needs a monospace font."""
+    here = next(row for row in table if row["here"])
     lines = [
-        LABEL.format(CITY, f"{sky['temp']} °C, {sky['sky']}"),
-        LABEL.format("", f"{sky['spark']}  {sky['daylight']}   {sky['trend']}"),
+        f"#### 🌤️ {CITY} — {sky['temp']} °C, {sky['sky']}",
         "",
-        ROW.format(left=LEAGUE, pld="P", gd="GD", pts="Pts", mark=""),
+        f"`{sky['spark']}`  {sky['daylight']} of daylight, {sky['trend']}",
+        "",
+        f"#### ⚽ {TEAM} — {ordinal(here['Pos'])} in the {LEAGUE}",
+        "",
+        "| | Team | P | GD | Pts |",
+        "|--:|:--|--:|--:|--:|",
     ]
-    lines += [
-        ROW.format(
-            left=clip(f"{row['Pos']:>3}  {row['Team']}", 24),
-            pld=row["Pld"],
-            gd=row["GD"],
-            pts=row["Pts"],
-            mark="   ←" if row["here"] else "",
-        )
-        for row in table
-    ]
-
-    inner = max(width(line) for line in lines) + 2
-    box = (
-        ["╭" + "─" * inner + "╮"]
-        + ["│" + line + " " * (inner - width(line)) + "│" for line in lines]
-        + ["╰" + "─" * inner + "╯"]
-    )
-
-    uneven = {width(line) for line in box}
-    if len(uneven) != 1:
-        raise UpdateError(f"box is not square: widths {sorted(uneven)}")
-    return "\n".join(box)
+    for row in table:
+        cells = [row[name] for name in COLUMNS]
+        if row["here"]:
+            cells = [f"**{cell}**" for cell in cells]
+        lines.append("| " + " | ".join(cells) + " |")
+    return "\n".join(lines)
 
 
 def write(block: str) -> bool:
@@ -241,7 +206,7 @@ def write(block: str) -> bool:
         raise UpdateError(f"markers {START} / {END} not found in {README.name}")
 
     head, tail = before.split(START)[0], before.split(END)[-1]
-    after = f"{head}{START}\n```\n{block}\n```\n{END}{tail}"
+    after = f"{head}{START}\n\n{block}\n\n{END}{tail}"
     if after == before:
         return False
     README.write_text(after, encoding="utf-8")
