@@ -9,7 +9,7 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 <!-- live:start -->
 ```
 ╭────────────────────────────────────────────────────╮
-│  Stockholm    23.4 °C, overcast                    │
+│  Stockholm    23.8 °C, overcast                    │
 │               ██▇▆▅▅▄▃▂▁▁  15h 33m   −4.9 min/day  │
 │                                                    │
 │  Eerste Divisie            P    GD   Pts           │
