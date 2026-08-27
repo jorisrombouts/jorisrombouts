@@ -8,9 +8,9 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — 13.0 °C, clear
+#### 🌤️ Stockholm — 17.0 °C, clear
 
-`██▇▆▅▅▄▃▂▁▁`  14h 37m of daylight, −5.1 min/day
+`██▇▆▅▅▄▃▂▁▁`  14h 31m of daylight, −5.2 min/day
 
 #### ⚽ NAC Breda — 7th in the Eerste Divisie
 
@@ -18,7 +18,7 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 |--:|:--|--:|--:|--:|
 | 6 | Roda JC Kerkrade | 3 | +1 | 6 |
 | **7** | **NAC Breda** | **3** | **0** | **6** |
-| 8 | Den Bosch | 3 | +2 | 4 |
+| 8 | Jong PSV | 3 | 0 | 6 |
 
 <!-- live:end -->
 
