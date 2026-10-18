@@ -8,17 +8,17 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — 9.5 °C, overcast
+#### 🌤️ Stockholm — 3.2 °C, clear
 
-`██▇▆▅▅▄▃▂▁▁`  10h 05m of daylight, −5.2 min/day
+`██▇▆▅▅▄▃▂▁▁`  9h 59m of daylight, −5.2 min/day
 
-#### ⚽ NAC Breda — 4th in the Eerste Divisie
+#### ⚽ NAC Breda — 5th in the Eerste Divisie
 
 | | Team | P | GD | Pts |
 |--:|:--|--:|--:|--:|
-| 3 | VVV-Venlo | 11 | +12 | 22 |
-| **4** | **NAC Breda** | **11** | **+3** | **20** |
-| 5 | Emmen | 10 | +4 | 19 |
+| 4 | Emmen | 11 | +5 | 22 |
+| **5** | **NAC Breda** | **11** | **+3** | **20** |
+| 6 | Vitesse | 11 | +1 | 17 |
 
 <!-- live:end -->
 
