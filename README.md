@@ -8,9 +8,9 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — 10.5 °C, partly cloudy
+#### 🌤️ Stockholm — 8.5 °C, partly cloudy
 
-`██▇▆▅▄▄▃▂▁▁`  9h 18m of daylight, −5.2 min/day
+`██▇▆▅▄▄▃▂▁▁`  9h 13m of daylight, −5.2 min/day
 
 #### ⚽ NAC Breda — 6th in the Eerste Divisie
 
