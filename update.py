@@ -16,6 +16,7 @@ import html
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -61,16 +62,33 @@ class UpdateError(RuntimeError):
 # --- sources ---------------------------------------------------------------
 
 
+RETRY_DELAYS = (5, 15)  # seconds before the 2nd and 3rd attempts
+
+
 def fetch(url: str) -> dict:
+    """GET a JSON document, retrying network hiccups and server-side errors.
+
+    Runners share IPs and sometimes stall on the TLS handshake; a second try a
+    few seconds later almost always gets through. Client errors (4xx other
+    than 429) are not retried: asking again will not change the answer.
+    """
     request = urllib.request.Request(url, headers={"User-Agent": "jorisrombouts-profile"})
-    try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            body = response.read().decode("utf-8")
-    except urllib.error.HTTPError as exc:
-        # The body usually says why, which beats the status code alone.
-        raise UpdateError(f"{url} — HTTP {exc.code}: {exc.read().decode('utf-8')[:120]}") from exc
-    except OSError as exc:  # URLError and TimeoutError are both OSError
-        raise UpdateError(f"{url} — {exc}") from exc
+    for attempt, delay in enumerate((0, *RETRY_DELAYS), start=1):
+        time.sleep(delay)
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                body = response.read().decode("utf-8")
+            break
+        except urllib.error.HTTPError as exc:
+            # The body usually says why, which beats the status code alone.
+            error = UpdateError(f"{url} — HTTP {exc.code}: {exc.read().decode('utf-8')[:120]}")
+            if exc.code != 429 and exc.code < 500:
+                raise error from exc
+        except OSError as exc:  # URLError and TimeoutError are both OSError
+            error = UpdateError(f"{url} — {exc}")
+        print(f"attempt {attempt} failed: {error}", file=sys.stderr)
+    else:
+        raise error
     try:
         return json.loads(body)
     except json.JSONDecodeError as exc:
