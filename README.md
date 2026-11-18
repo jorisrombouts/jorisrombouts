@@ -8,7 +8,7 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — 2.3 °C, overcast
+#### 🌤️ Stockholm — 1.9 °C, overcast
 
 `██▇▆▅▄▄▃▂▁▁`  7h 27m of daylight, −4.6 min/day
 
