@@ -8,9 +8,9 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — 1.7 °C, drizzle
+#### 🌤️ Stockholm — 1.4 °C, light drizzle
 
-`██▇▆▅▄▄▃▂▁▁`  7h 11m of daylight, −4.3 min/day
+`██▇▆▅▄▄▃▂▁▁`  7h 07m of daylight, −4.2 min/day
 
 #### ⚽ NAC Breda — 3rd in the Eerste Divisie
 
