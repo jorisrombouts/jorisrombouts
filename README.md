@@ -8,9 +8,9 @@ No black boxes, no over-engineering. Simple systems I understand, can measure, a
 
 <!-- live:start -->
 
-#### 🌤️ Stockholm — -2.2 °C, clear
+#### 🌤️ Stockholm — -1.5 °C, overcast
 
-`██▇▆▅▄▄▃▂▁▁`  6h 52m of daylight, −4.0 min/day
+`██▇▆▅▄▄▃▂▁▁`  6h 48m of daylight, −3.9 min/day
 
 #### ⚽ NAC Breda — 3rd in the Eerste Divisie
 
